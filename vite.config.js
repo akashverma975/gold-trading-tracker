@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/tradebook/',
+  base: '/gold-trading-tracker/',
   server: {
     open: true
   }
