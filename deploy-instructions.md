@@ -6,7 +6,7 @@ Follow these steps to deploy your Gold Trading Tracker app to GitHub Pages:
 
 1. Go to [GitHub](https://github.com) and sign in to your account
 2. Click the "+" icon in the top right corner and select "New repository"
-3. Name your repository `tradebook`
+3. Name your repository `gold-trading-tracker`
 4. Choose whether to make it public or private
 5. Click "Create repository"
 
