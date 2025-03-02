@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Trading Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script type="module" crossorigin src="/assets/index-73e45221.js"></script>
+  <link rel="stylesheet" href="/assets/index-f119b331.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo-container">
+        <i class="fas fa-coins logo-icon"></i>
+        <h1>Gold Tracker</h1>
+      </div>
+      <nav class="main-nav">
+        <button id="showTransactionsBtn" class="nav-btn active">
+          <i class="fas fa-list-ul"></i>
+          <span>Transactions</span>
+        </button>
+        <button id="showRemindersBtn" class="nav-btn">
+          <i class="fas fa-bell"></i>
+          <span>Reminders</span>
+        </button>
+      </nav>
+    </header>
+
+    <main class="app-main">
+      <section id="transactionsSection">
+        <div class="controls">
+          <button id="addTransactionBtn" class="primary-btn">
+            <i class="fas fa-plus"></i> New
+          </button>
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+            <button id="advancedSearchBtn" class="icon-btn">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="advancedSearchPanel" class="hidden card">
+          <div class="card-header">
+            <h3><i class="fas fa-filter"></i> Advanced Search</h3>
+          </div>
+          <div class="search-form">
+            <div class="form-group">
+              <label for="startDate"><i class="far fa-calendar-alt"></i> Start Date</label>
+              <input type="date" id="startDate">
+            </div>
+            <div class="form-group">
+              <label for="endDate"><i class="far fa-calendar-alt"></i> End Date</label>
+              <input type="date" id="endDate">
+            </div>
+            <div class="form-group">
+              <label for="ornamentTypeFilter"><i class="fas fa-gem"></i> Ornament Type</label>
+              <select id="ornamentTypeFilter">
+                <option value="">All</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="retailerFilter"><i class="fas fa-store"></i> Retailer</label>
+              <select id="retailerFilter">
+                <option value="">All</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="paymentStatusFilter"><i class="fas fa-money-check-alt"></i> Payment Status</label>
+              <select id="paymentStatusFilter">
+                <option value="">All</option>
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button id="applyFiltersBtn" class="primary-btn">
+                <i class="fas fa-check"></i> Apply
+              </button>
+              <button id="resetFiltersBtn">
+                <i class="fas fa-undo"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="transactions-container">
+          <!-- Mobile Card View -->
+          <div id="transactionsCardView" class="card-grid">
+            <!-- Transaction cards will be loaded here -->
+          </div>
+          
+          <div id="noTransactionsMessage" class="empty-state hidden">
+            <i class="fas fa-box-open empty-icon"></i>
+            <p>No transactions found. Add a new transaction to get started.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="remindersSection" class="hidden">
+        <div class="reminders-container">
+          <!-- Mobile Card View -->
+          <div id="remindersCardView" class="card-grid">
+            <!-- Reminder cards will be loaded here -->
+          </div>
+          
+          <div id="noRemindersMessage" class="empty-state hidden">
+            <i class="fas fa-check-circle empty-icon"></i>
+            <p>No pending payments found.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation Bar (Mobile) -->
+    <nav class="bottom-nav">
+      <button id="mobileTransactionsBtn" class="bottom-nav-btn active">
+        <i class="fas fa-list-ul"></i>
+        <span>Transactions</span>
+      </button>
+      <button id="mobileAddBtn" class="bottom-nav-btn add-btn">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button id="mobileRemindersBtn" class="bottom-nav-btn">
+        <i class="fas fa-bell"></i>
+        <span>Reminders</span>
+      </button>
+    </nav>
+
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modalTitle"><i class="fas fa-plus-circle"></i> Add New Transaction</h2>
+          <span class="close-btn">&times;</span>
+        </div>
+        <form id="transactionForm">
+          <input type="hidden" id="transactionId">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ornamentType"><i class="fas fa-gem"></i> Ornament Type</label>
+              <input type="text" id="ornamentType" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="weight"><i class="fas fa-weight"></i> Weight (grams)</label>
+              <input type="number" id="weight" step="0.0001" min="0" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="purity"><i class="fas fa-certificate"></i> Purity</label>
+              <input type="text" id="purity" placeholder="e.g., 22K, 916, 91.6%" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ratePerGram"><i class="fas fa-rupee-sign"></i> Rate per gram</label>
+              <input type="number" id="ratePerGram" step="0.01" min="0" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="margin"><i class="fas fa-percentage"></i> Margin (%)</label>
+              <input type="number" id="margin" step="0.01" min="0" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="transactionDate"><i class="far fa-calendar-alt"></i> Date</label>
+              <input type="date" id="transactionDate" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="retailer"><i class="fas fa-store"></i> Retailer</label>
+              <input type="text" id="retailer" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="paymentStatus"><i class="fas fa-money-check-alt"></i> Payment Status</label>
+              <select id="paymentStatus" required>
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row payment-due-container">
+            <div class="form-group">
+              <label for="paymentDueDate"><i class="far fa-calendar-alt"></i> Payment Due Date</label>
+              <input type="date" id="paymentDueDate">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="notes"><i class="fas fa-sticky-note"></i> Notes</label>
+            <textarea id="notes" rows="3"></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">
+              <i class="fas fa-save"></i> Save
+            </button>
+            <button type="button" id="cancelTransactionBtn">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h2>
+          <span class="close-btn" id="closeDeleteModal">&times;</span>
+        </div>
+        <p>Are you sure you want to delete this transaction? This action cannot be undone.</p>
+        <div class="form-actions">
+          <button id="confirmDeleteBtn" class="danger-btn">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+          <button id="cancelDeleteBtn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+      <div class="toast-content">
+        <i id="toastIcon" class="fas"></i>
+        <span id="toastMessage"></span>
+      </div>
+    </div>
+    
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading-indicator hidden">
+      <div class="spinner"></div>
+      <p>Loading data...</p>
+    </div>
+  </div>
+
+  
+</body>
+</html>
