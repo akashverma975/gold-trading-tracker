@@ -1,4 +1,3 @@
-
 export class UIController {
   constructor() {
     // DOM Elements
@@ -65,5 +64,27 @@ export class UIController {
       });
     }
   }
-  
-  updateMobileNavActive
+
+  // Fix: Implement the missing method
+  updateMobileNavActiveState(activeSection) {
+    const allButtons = [this.mobileTransactionsBtn, this.mobileRemindersBtn];
+    allButtons.forEach(btn => btn?.classList?.remove('active'));
+
+    if (activeSection === 'transactions') {
+      this.mobileTransactionsBtn?.classList?.add('active');
+    } else if (activeSection === 'reminders') {
+      this.mobileRemindersBtn?.classList?.add('active');
+    }
+  }
+
+  // Placeholder methods for navigation functionality
+  showTransactions() {
+    this.transactionsSection.style.display = 'block';
+    this.remindersSection.style.display = 'none';
+  }
+
+  showReminders() {
+    this.transactionsSection.style.display = 'none';
+    this.remindersSection.style.display = 'block';
+  }
+}
