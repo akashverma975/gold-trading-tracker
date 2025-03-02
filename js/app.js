@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
   const showTransactionsBtn = document.getElementById('showTransactionsBtn');
